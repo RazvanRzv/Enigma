@@ -7,31 +7,45 @@ import java.util.HashMap;
 public class Main {
 
 	public static void main(String[] args) {
-		
-		
-		Rotor rot1 = new Rotor(1, "EKMFLGDQVZNTOWYHXUSPAIBRCJ", 'Q');
-		Rotor rot3 = new Rotor(3, "BDFHJLCPRTXVZNYEIWGAKMUSQO", 'Q');
-//		rot3.print();
-		Rotor rot6 = new Rotor(7, "NZJHGRCXMYSWBOUFAIVLPEKQDT", 'A', 'N');
-		rot6.print();
-		Plugboard pb = new Plugboard(26);
-		pb.setPair('A', 'F');
-//		 pb.print();
-		EnigmaMachine em = new EnigmaMachine(3);
-//		em.print();
 
-//		HashMap<Character, Character> hash = new HashMap<Character, Character>();
-//		hash.put('a', 'b');
-//		hash.put('c', 'd');
-//		hash.put('e', 'f');
-//		hash.put('g', 'h');
-//		hash.put('i', 'j');
-//		hash.put('k', 'l');
-//		hash.put('m', 'n');
-//		hash.put('o', 'p');
-//		hash.put('q', 'r');
-//		System.out.println(hash.get('a'));
-		
+		Setup setup = new Setup("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "B 1 2 3", "");
+		EnigmaMachine em = new EnigmaMachine(setup);
+		System.out.println(em.encrypt("AAAAAAAA"));
+
+		char x = 'C';
+		int i = 3;
+//		System.out.println(((x - 3) - 'A') );
+//		System.out.println(-28 % 26);
+//		if (x - i < 65) {
+////			System.out.println((char)('A' + ((x - 3) - 'A')% 26));
+//		}
+		System.out.println(mod(-1, 26));
+		// em.print();
+		// int j = 0;
+		// while (j < 130) {
+		// em.rotateRotors();
+		// for (int i = 0; i < 3; i++) {
+		// System.out.print(em.rotors[i].offset + " ");
+		// }
+		// System.out.println();
+		// j++;
+		// }
+
+		// System.out.println(em.crypt('A'));
+		// HashMap<Character, Character> hash = new HashMap<Character,
+		// Character>();
+		// hash.put('A', 'B');
+		// hash.put('C', 'D');
+		// hash.put('E', 'F');
+		// hash.put('Q', 'T');
+		// String text = "ABC";
+		// System.out.println(hash.get(text.charAt(0)));
+
 	}
 
+	public static int mod(int x, int mod) {
+		int ret = x % mod;
+		if(ret >= 0) return ret;
+		return mod + ret;
+	}
 }
