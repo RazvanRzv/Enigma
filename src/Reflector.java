@@ -11,7 +11,7 @@ public class Reflector {
 	protected int							number;
 	protected String						mapping;
 
-	protected String						alphabet;
+	protected char[]						alphabet;
 	protected HashMap<Character, Character>	map;
 
 	public Reflector(int number, String mapping) {
@@ -21,22 +21,20 @@ public class Reflector {
 	}
 
 	protected void setAlphabet(String alphabet) {
-		this.alphabet = alphabet;
+		this.alphabet = alphabet.toCharArray();
 		createMapping();
 	}
 
 	protected void createMapping() {
-		for (int i = 0; i < alphabet.length(); i++) {
-			char pos = alphabet.charAt(i);
-			int index = ALPHABET.indexOf(pos);
-			map.put(ALPHABET.charAt(index), mapping.charAt(index));
+		for (int i = 0; i < ALPHABET.length(); i++) {
+			map.put(ALPHABET.charAt(i), mapping.charAt(i));
 		}
 	}
 
-	public HashMap<Character, Character> getMap(){
+	public HashMap<Character, Character> getMap() {
 		return map;
 	}
-	
+
 	public void print() {
 		System.out.println("map: " + map);
 	}

@@ -8,13 +8,11 @@ public class EnigmaMachine implements Encrypter {
 	public Rotor[]		rotors;
 	private Reflector	reflector;
 	private Plugboard	plugboard;
+	private char[]		alphabet;
 
 	public EnigmaMachine(Setup setup) {
-		rotors = setup.rotors;
-		// this.rotors = new Rotor[3];
-		// for(int i = 0; i < 3; i++) {
-		// rotors[i] = setup.rotors[i];
-		// }
+		this.rotors = setup.rotors;
+		this.alphabet = setup.alphabet;
 		this.reflector = setup.reflector;
 		this.plugboard = setup.plugboard;
 	}
@@ -47,45 +45,60 @@ public class EnigmaMachine implements Encrypter {
 		return toReturn;
 	}
 
-	public char cryptChar(char ch) {
+	private char cryptChar(char ch) {
 		ch = Character.toUpperCase(ch);
-		if (ch == ' ')
+		if (ch < 'A' || ch > 'Z')
 			return ch;
 
-		// for (int i = 0; i < 3; i++) {
-		// System.out.println(rotors[i].mapping);
-		// System.out.println(rotors[1].getRevMap());
-		// }
+		ch = plugboard.getMap().get(ch);
 
 		rotateRotors();
-		for (int i = 0; i < 3; i++) {
-			if (ch + rotors[i].offset > 'Z') {
-				ch = rotors[i].getMap()
-						.get((char) ('A' - 1 + (ch + rotors[i].offset) % 'Z')); // caz in care caracterul iese din alfabet
-			} else
-				ch = rotors[i].getMap()
-						.get((char) ((ch + rotors[i].offset) % 'Z'));
-			ch = (char) (ch - rotors[i].offset);
-			if (ch < 'A') {
-				ch = (char) ('A' + mod(ch - 'A', 26));
-			}
+
+		for (int i = 0; i < rotors.length; i++) {
+			ch = charAtPos(
+					mod(getCharPos(ch) + rotors[i].offset, alphabet.length)); // caracterul
+																				// din
+																				// alfabet
+																				// dupa
+																				// aplicarea
+																				// offsetului
+			ch = rotors[i].mapChar(ch); // maparea caracterului prin rotor
+			ch = charAtPos(mod(
+					getCharPos(ch) + rotors[i].ringOffset - rotors[i].offset,
+					alphabet.length)); // caracterul din alfabet dupa scaderea
+										// offsetului
 		}
+
 		ch = reflector.getMap().get(ch);
-		for (int i = 2; i >= 0; i--) {
-			if (ch + rotors[i].offset > 'Z') {
-				ch = rotors[i].getRevMap()
-						.get((char) ('A' - 1 + (ch + rotors[i].offset) % 'Z')); // caz in care caracterul iese din alfabet
-			} else
-				ch = rotors[i].getRevMap()
-						.get((char) ((ch + rotors[i].offset) % 'Z'));
-			ch = (char) (ch - rotors[i].offset);
-			if (ch < 'A') {
-				ch = (char) ('A' + mod(ch - 'A', 26)); // caz in care caracterul iese din alfabet
+
+		for (int i = rotors.length - 1; i >= 0; i--) {
+			ch = charAtPos(
+					mod(getCharPos(ch) + rotors[i].offset, alphabet.length));
+			ch = rotors[i].revMapChar(ch);
+			ch = charAtPos(mod(
+					getCharPos(ch) + rotors[i].ringOffset - rotors[i].offset,
+					alphabet.length));
+		}
+
+		ch = plugboard.getMap().get(ch);
+
+		return ch;
+
+	}
+
+	private char charAtPos(int pos) {
+		return alphabet[pos];
+	}
+
+	private int getCharPos(char ch) {
+		for (int i = 0; i < alphabet.length; i++) {
+			if (ch == alphabet[i]) {
+				return i;
 			}
 		}
-		ch = plugboard.map.get(ch);
-		return ch;
+		return -1;
 	}
+
 
 	private int mod(int x, int mod) {
 		int ret = x % mod;

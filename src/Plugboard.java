@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class Plugboard {
 
-	public HashMap<Character, Character>	map;
+	private HashMap<Character, Character>	map;
 
 	public Plugboard(String alphabet) {
 		map = new HashMap<Character, Character>();

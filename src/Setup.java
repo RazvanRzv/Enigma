@@ -13,9 +13,10 @@ public class Setup {
 	public Rotor[]		rotors;
 	public Plugboard	plugboard;
 	public Reflector	reflector;	// reflectorul este un rotor fara notch.
+	public char[]		alphabet;
 
 	public Setup(String alphabet, String reflAndRot, String pairs) {
-
+		this.alphabet = alphabet.toCharArray();
 		this.plugboard = new Plugboard(alphabet);
 		String[] plugboardPairs = pairs.split(" ");
 		if(!plugboardPairs[0].equals("")) {
@@ -27,7 +28,6 @@ public class Setup {
 		String[] rotorsUsed = reflAndRot.split(" ");
 		this.reflector = new ReflectorFactory().getReflector(rotorsUsed[0].charAt(0));
 		this.reflector.setAlphabet(alphabet);
-
 		this.rotors = new Rotor[rotorsUsed.length - 1];
 		int n = rotorsUsed.length - 1;
 		for (int i = n; i >= 1; i--) {
