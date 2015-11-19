@@ -93,5 +93,21 @@ public final class FileParser {
 
 		return Arrays.asList(line.split(" +"));
 	}
+	
+	public String getLine() {
+		String line;
+
+		try {
+			line = reader.readLine();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
+		if (null == line) {
+			return null;
+		}
+
+		return line;
+	}
 
 }

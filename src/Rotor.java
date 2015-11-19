@@ -7,20 +7,21 @@ import java.util.HashMap;
 public class Rotor extends Reflector {
 
 	private char							notch;
-	private char							notch2;			// for
-															// rotors
-															// 6,7,8;
+	private char							notch2;		// for
+														// rotors
+														// 6,7,8;
 	private HashMap<Character, Character>	reverseMap;
 	// private int offset;
-	public int								offset;
-	public int								ringOffset	= 0;
+	private int								offset;
+	private int								ringOffset;
 
 	public Rotor(int number, String mapping, char notch) {
 		super(number, mapping);
 		reverseMap = new HashMap<Character, Character>();
 		this.offset = 0;
 		this.ringOffset = 0;
-		this.notch = notch;
+//		this.notch = (char) (notch - 1);
+		 this.notch = notch;
 	}
 
 	public Rotor(int number, String mapping, char notch, char notch2) {
@@ -49,7 +50,7 @@ public class Rotor extends Reflector {
 	public char mapChar(char ch) {
 		return map.get(ch);
 	}
-	
+
 	public char revMapChar(char ch) {
 		return reverseMap.get(ch);
 	}
@@ -58,16 +59,32 @@ public class Rotor extends Reflector {
 		this.offset = offset;
 	}
 
+	public void setOffset(char offset) {
+		this.offset = offset - 'A';
+	}
+
+	public int getOffset() {
+		return offset;
+	}
+
 	public void rotateRotor() {
 		offset++;
 	}
 
-	public void setRingOffset(int value) {
-		ringOffset = (int) 'A' + value;
+	public void setRingOffset(char offset) {
+		ringOffset = offset - 'A';
+	}
+
+	public void setRingOffset(int offset) {
+		this.ringOffset = offset;
+	}
+
+	public int getRingOffset() {
+		return ringOffset;
 	}
 
 	public int getNotch() {
-		return notch - 'A';
+		return ((notch - 'A') + 26) % 26;
 	}
 
 	public void print() {
